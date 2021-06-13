@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<!--UATSpace page
+    written by: John Humphrey
+    johhump1@uat.edu
+    5/11/2021-->
+<!--Craps in Space
+        
+        "The astronauts have finally made it to space. While they wait for their mission to begin they decide to play a game to pass the time. 
+        One of them sugests they play the old world game of craps. He gets out his die and begins to explain the game. If you roll even doubles you win but if you roll 7 or 11 then you lose.
+        All other results you roll again. The players place their bets and begin to play the game of craps."
+
+    -->
+<html>
+
+<head>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <script src="code.js"></script>
+    <script src="dataLoader-1.js"></script>
+    <title>
+        UATSpace Page
+    </title>
+</head>
+
+<body>
+    <!--needed for the DOM-->
+    <script>
+        //create some needed variables
+        var theTime = new Date();
+        var tempTime = new Date();
+        var time_interval = 5000;
+        var last_iteration = 0;
+        var running = true;
+        var index = 0;
+        var timer;
+
+        //to getData for our table
+        var data = getData();
+
+        //data from dataloader() to our table
+        function updateDisplay(){
+            theTime = new Date();
+
+            //fill in the table
+            var timeRead = data[index].time_seconds;
+            if(timeRead >= 10){
+                document.getElementById("data").rows["seconds"].innerHTML = dataRow("Time Elapsed", data[index].time_seconds, "seconds");
+                document.getElementById("data").rows["latitude"].innerHTML = dataRow("Latitude", data[index].latitude, " ");
+                document.getElementById("data").rows["longitude"].innerHTML = dataRow("Longitude", data[index].longitude, " ");
+                document.getElementById("data").rows["gps_Altitude"].innerHTML = dataRow("GPSs Altitude", data[index].gps_altitude, " ");
+                document.getElementById("data").rows["bmpSensor_altitude"].innerHTML = dataRow("bmp Sensor altitude ", data[index].bmpSensor_altitude, " ");
+                document.getElementById("data").rows["bpmSensor_pressure"].innerHTML = dataRow("bpm Sensor pressure ", data[index].bmpSensor_pressure, " ");
+                document.getElementById("data").rows["bpmSensor_temperature"].innerHTML = dataRow("bpm Sensor temperature", data[index].bmpSensor_temp, " ");
+                document.getElementById("data").rows["digitalSensor_temperature"].innerHTML = dataRow("digital Sensor temperature", data[index].digSensor_temp, " ");
+                document.getElementById("data").rows["cssSensor_temperature"].innerHTML = dataRow("css Sensor temperature", data[index].cssSensor_temp, " ");
+                document.getElementById("data").rows["cssSensor_eco2"].innerHTML = dataRow("css Sensor eco2", data[index].cssSensor_eCO2, " ");
+                document.getElementById("data").rows["cssSensor_tvoc"].innerHTML = dataRow("css Sensor tvoc", data[index].cssSensor_TVOC, " ");
+                document.getElementById("data").rows["UV"].innerHTML = dataRow("UV", data[index].UV, " ");
+                document.getElementById("data").rows["accelX"].innerHTML = dataRow("accel X", data[index].accelX, " ");
+                document.getElementById("data").rows["accelY"].innerHTML = dataRow("accel Y", data[index].accelY, " ");
+                document.getElementById("data").rows["accelZ"].innerHTML = dataRow("accel Z", data[index].accelZ, " ");
+                document.getElementById("data").rows["magneticX"].innerHTML = dataRow("magnetic X", data[index].magneticX, " ");
+                document.getElementById("data").rows["magneticY"].innerHTML = dataRow("magnetic Y", data[index].magneticY, " ");
+                document.getElementById("data").rows["magneticZ"].innerHTML = dataRow("magnetic Z", data[index].magneticZ, " ");
+                document.getElementById("data").rows["gyroX"].innerHTML = dataRow("gyro X", data[index].gyroX, " ");
+                document.getElementById("data").rows["gyroY"].innerHTML = dataRow("gyro Y", data[index].gyroY, " ");
+                document.getElementById("data").rows["gyroZ"].innerHTML = dataRow("gyro Z", data[index].gyroZ, " ");
+
+            }
+            if(index < 500){
+                index++;
+            }else {
+                index = 0;
+            }
+
+
+        }
+
+    </script>
+
+
+    <!--making a table to hold h1 title and jpg-->
+    <table>
+        <td><img src="UATspaceLogo-2.jpg"></td>
+        <td>
+            <h1>
+                UAT Space Program
+            </h1>
+        </td>
+    </table>
+    <!--defines table perameters-->
+    <table border="2" width="70%" id="data">
+        <col style="width: 35%;">
+        <col style="width: 35%;">
+        <thead>
+            <tr style="font-family: fantasy;">
+                <th>Data Type</th>
+                <th>Reading</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!--table data-->
+            <tr id="seconds"></tr>
+            <tr id="latitude"></tr>
+            <tr id="longitude"></tr>
+            <tr id="gps_Altitude"></tr>
+            <tr id="bmpSensor_altitude"></tr>
+            <tr id="bpmSensor_pressure"></tr>
+            <tr id="bpmSensor_temperature"></tr>
+            <tr id="digitalSensor_temperature"></tr>
+            <tr id="cssSensor_temperature"></tr>
+            <tr id="cssSensor_eco2"></tr>
+            <tr id="cssSensor_tvoc"></tr>
+            <tr id="UV"></tr>
+            <tr id="accelX"></tr>
+            <tr id="accelY"></tr>
+            <tr id="accelZ"> </tr>
+            <tr id="magneticX"></tr>
+            <tr id="magneticY"></tr>
+            <tr id="magneticZ"></tr>
+            <tr id="gyroX"></tr>
+            <tr id="gyroY"></tr>
+            <tr id="gyroZ"></tr>
+
+        </tbody>
+    </table>
+
+    <br>
+    <!--adds a start and stop button-->
+    <p id="countdownTimer">Countdown Status...</p>
+    <button class="button" id="startButton" onclick="start();">Start</button>
+    <button class="button" id="stopButton" onclick="stop();">Stop</button>
+    <br>
+    <br>
+
+    <!--adds button to play music-->
+    <button class="button" onclick="playStation();">Play Sound</button>
+    <br>
+
+
+    <!--Space for the craps game-->
+    <br>
+    <br>
+    <p> "The astronauts have finally made it to space. While they wait for their mission to begin they decide to play a
+        game to pass the time.
+        One of them sugests they play the old world game of craps. He gets out his die and begins to explain the game.
+        If you roll even doubles
+        you win but if you roll 7 or 11 then you lose. All other results you roll again. The players place their bets
+        and
+        begin to play the game of craps."</p>
+    <br>
+    <br>
+    <div id="die1Results">die1 status...</div><br>
+    <div id="die2Results">die2 status...</div><br>
+    <div id="sumResults">sum status...</div><br>
+    <div id="crapsResults">Craps game status...</div><br>
+    <button class="button" onclick="playCraps()">Play Craps</button>
+    <br>
+    <br>
+    <br>
+
+
+</body>
+
+</html>
